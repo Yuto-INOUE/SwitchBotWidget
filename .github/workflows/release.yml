@@ -30,10 +30,15 @@ jobs:
         shell: pwsh
         run: node scripts/check-version.mjs "${{ github.ref_name }}"
 
-      - name: テスト
-        run: |
-          npm test
-          cargo test --locked
+      - name: 画面ロジックのテスト
+        run: npm test
+
+      # cargo test は generate_context! で dist/ を読むため、先に作っておく
+      - name: 型チェックとフロントエンドのビルド
+        run: npm run build
+
+      - name: Rust のテスト
+        run: cargo test --locked
 
       - name: インストーラをビルド（自動更新用の署名つき）
         env:
