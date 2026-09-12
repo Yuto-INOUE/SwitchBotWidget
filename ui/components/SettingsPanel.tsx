@@ -1,7 +1,9 @@
 import { useDebouncedCommit } from "../hooks/useDebouncedCommit";
+import type { UpdateState } from "../hooks/useUpdater";
 import { REFRESH_OPTIONS } from "../lib/labels";
 import type { Config } from "../lib/types";
 import { Switch } from "./Switch";
+import { UpdateSection } from "./UpdateSection";
 
 /** 不透明度は動かした見た目をすぐ確かめたいので、確定までを短くする */
 const OPACITY_COMMIT_MS = 200;
@@ -11,6 +13,9 @@ type Props = {
   visibleCount: number;
   usableCount: number;
   version: string;
+  updateState: UpdateState;
+  onCheckUpdate: () => void;
+  onInstallUpdate: () => void;
   onPatch: (changes: Partial<Config>) => void;
   onOpenPicker: () => void;
   onRecredential: () => void;
@@ -23,6 +28,9 @@ export function SettingsPanel({
   visibleCount,
   usableCount,
   version,
+  updateState,
+  onCheckUpdate,
+  onInstallUpdate,
   onPatch,
   onOpenPicker,
   onRecredential,
@@ -58,6 +66,11 @@ export function SettingsPanel({
         label="画面の端に吸着させる"
         checked={config.snapToEdges}
         onChange={(next) => onPatch({ snapToEdges: next })}
+      />
+      <Switch
+        label="起動時に更新を確認する"
+        checked={config.autoCheckUpdates}
+        onChange={(next) => onPatch({ autoCheckUpdates: next })}
       />
 
       <div className="switch-row">
@@ -106,7 +119,14 @@ export function SettingsPanel({
         </button>
       </div>
 
-      <p>{version ? `SwitchBot Widget ${version}` : ""}</p>
+      <div className="divider" />
+
+      <UpdateSection
+        version={version}
+        state={updateState}
+        onCheck={onCheckUpdate}
+        onInstall={onInstallUpdate}
+      />
     </div>
   );
 }

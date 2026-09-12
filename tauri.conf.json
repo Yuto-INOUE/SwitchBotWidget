@@ -57,6 +57,23 @@
           "Japanese"
         ]
       }
+    },
+    "publisher": "Yuto Inoue",
+    "copyright": "Copyright (c) 2026 Yuto Inoue",
+    "licenseFile": "LICENSE",
+    "category": "Utility",
+    "homepage": "https://github.com/Yuto-INOUE/SwitchBotWidget",
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQyMUE2NjVERjYyRDIzQkQKUldTOUl5MzJYV1lhMHEzZVkyc0JmQmpmSDFheXpBaHkxdHpBUWpRU2ladkE3MHZ5Z0tYUnlyRUkK",
+      "endpoints": [
+        "https://github.com/Yuto-INOUE/SwitchBotWidget/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
     }
   }
 }

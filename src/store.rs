@@ -26,6 +26,8 @@ pub struct Config {
     pub auto_refresh_sec: u64,
     /// ドラッグを終えたときにモニタの端へ吸着させるか
     pub snap_to_edges: bool,
+    /// 起動時に新しいバージョンが出ていないか確かめるか
+    pub auto_check_updates: bool,
     /// 表示順（deviceId の並び）。ここにない ID は末尾に回る
     pub order: Vec<String>,
     /// 非表示にしている deviceId
@@ -46,6 +48,7 @@ impl Default for Config {
             opacity: 1.0,
             auto_refresh_sec: 300,
             snap_to_edges: true,
+            auto_check_updates: true,
             order: Vec::new(),
             hidden: Vec::new(),
             ac_state: HashMap::new(),

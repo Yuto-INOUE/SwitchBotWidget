@@ -27,6 +27,7 @@ const config = (over: Partial<Config> = {}): Config => ({
   opacity: 1,
   autoRefreshSec: 300,
   snapToEdges: true,
+  autoCheckUpdates: true,
   order: [],
   hidden: [],
   acState: {},

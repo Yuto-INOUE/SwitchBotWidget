@@ -476,6 +476,8 @@ fn blocks_snap(
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             is_configured,
             save_credentials,

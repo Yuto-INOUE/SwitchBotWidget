@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - run: npm ci
+
+      - name: 画面ロジックのテスト
+        run: npm test
+
+      - name: 型チェックとフロントエンドのビルド
+        run: npm run build
+
+      - name: Rust のテスト
+        run: cargo test --locked
+
+      - name: clippy
+        run: cargo clippy --locked --all-targets -- -D warnings

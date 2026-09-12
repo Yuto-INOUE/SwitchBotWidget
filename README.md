@@ -32,6 +32,18 @@ Chromium のレンダラーを使う以上、描画部分のコストは Electro
 Node.js ランタイムを抱えないことと、`additionalBrowserArgs`（`tauri.conf.json`）で
 WebView2 の常駐機能（同期・バックグラウンド通信・コンポーネント更新）を止めている点です。
 
+## インストール
+
+[Releases](https://github.com/Yuto-INOUE/SwitchBotWidget/releases) から
+`SwitchBotWidget-x.y.z-x64-setup.exe` をダウンロードして実行してください。
+インストールせずに試すなら `-portable.exe` をそのまま起動できます。
+
+コード署名をしていないので、初回起動時に Windows SmartScreen の警告が出ます。
+「詳細情報」→「実行」で進めてください。
+
+インストーラ版は設定画面から更新を確認でき、新しいバージョンがあればその場で適用できます
+（起動時の自動確認は設定で切れます）。
+
 ## 使いかた
 
 ### 1. トークンを取得する
@@ -42,13 +54,7 @@ WebView2 の常駐機能（同期・バックグラウンド通信・コンポ�
 4. 現れた**開発者向けオプション**を開く
 5. **トークン**と**クライアントシークレット**をコピー
 
-### 2. 起動して接続する
-
-```sh
-npm install
-npm run build:app
-./target/release/switchbot-widget.exe
-```
+### 2. 接続する
 
 初回起動時に入力欄が出るので、トークンとシークレットを貼り付けて「接続する」を押します。
 入力値は接続確認に成功した場合のみ Windows 資格情報マネージャー（`SwitchBotWidget`）に保存されます。
@@ -180,3 +186,50 @@ ui/                   React
 
 `lib/` は React にも DOM にも依存しないので、`npm test` だけで検証できます。
 `components/` は props と `lib/` の純関数を呼ぶだけで、API 呼び出しと状態更新は `hooks/` に閉じています。
+
+### リリースする
+
+1. バージョンを上げる（3 ファイルまとめて書き換わります）
+
+   ```sh
+   npm run version:set -- 0.2.0
+   cargo check            # Cargo.lock を合わせる
+   ```
+
+2. コミットしてタグを打つ
+
+   ```sh
+   git commit -am "0.2.0"
+   git tag v0.2.0
+   git push --follow-tags
+   ```
+
+3. `.github/workflows/release.yml` が走り、テスト → インストーラのビルド →
+   **下書きの** リリース作成までを行います。内容を確認して公開してください。
+
+タグと `tauri.conf.json` / `package.json` / `Cargo.toml` のバージョンが食い違うと、
+ワークフローが `scripts/check-version.mjs` で止めます。
+
+### 自動更新の仕組み
+
+- ビルド時に `TAURI_SIGNING_PRIVATE_KEY`（GitHub Secrets）でインストーラに署名します
+- `scripts/prepare-release.mjs` が署名を読み取って `latest.json` を作り、リリースに添付します
+- アプリは `releases/latest/download/latest.json` を見に行き、公開鍵で署名を検証してから更新します
+
+公開鍵は `tauri.conf.json` の `plugins.updater.pubkey` に入っています。
+**秘密鍵を失うと既存ユーザーへ更新を配信できなくなります**。生成した鍵
+（`~/.tauri/switchbot-widget.key`）は別の場所にも控えておいてください。
+
+手元で署名付きのインストーラを作る場合:
+
+```sh
+export TAURI_SIGNING_PRIVATE_KEY="$(cat ~/.tauri/switchbot-widget.key)"
+export TAURI_SIGNING_PRIVATE_KEY_PASSWORD=""
+npm run bundle && npm run release:prepare   # artifacts/ に出力されます
+```
+
+## ライセンス
+
+[MIT License](LICENSE) — Copyright (c) 2026 Yuto Inoue
+
+SwitchBot は株式会社 SwitchBot の商標です。このアプリは公式のものではありません。

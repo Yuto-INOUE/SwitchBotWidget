@@ -3,7 +3,7 @@ name = "switchbot-widget"
 version = "0.1.0"
 edition = "2021"
 description = "デスクトップ常駐型 SwitchBot リモコンウィジェット"
-authors = ["wwyinoue"]
+authors = ["Yuto Inoue"]
 license = "MIT"
 
 [features]
@@ -25,6 +25,8 @@ base64 = "0.22"
 uuid = { version = "1", features = ["v4"] }
 keyring = { version = "3", features = ["windows-native"] }
 anyhow = "1"
+tauri-plugin-updater = "2.11.0"
+tauri-plugin-process = "2.3.1"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.52"

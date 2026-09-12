@@ -2,6 +2,9 @@
   "name": "switchbot-widget-ui",
   "private": true,
   "version": "0.1.0",
+  "description": "デスクトップ常駐型の SwitchBot リモコンウィジェット",
+  "license": "MIT",
+  "author": "Yuto Inoue",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,10 +13,14 @@
     "tauri": "tauri",
     "dev:app": "tauri dev --no-default-features",
     "build:app": "npm run build && cargo build --release",
-    "bundle": "tauri build"
+    "bundle": "tauri build",
+    "version:set": "node scripts/set-version.mjs",
+    "release:prepare": "node scripts/prepare-release.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-updater": "^2.11.0",
     "react": "^19",
     "react-dom": "^19"
   },

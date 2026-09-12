@@ -40,6 +40,8 @@ export type Config = {
   autoRefreshSec: number;
   /** ドラッグを終えたときにモニタの端へ吸着させるか */
   snapToEdges: boolean;
+  /** 起動時に新しいバージョンが出ていないか確かめるか */
+  autoCheckUpdates: boolean;
   order: string[];
   hidden: string[];
   acState: Record<string, AcState>;

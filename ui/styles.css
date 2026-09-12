@@ -822,3 +822,30 @@ select {
   flex: none;
   opacity: 0.6;
 }
+
+/* ---- 更新 ---- */
+
+.update-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.update-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.update-info .btn-note {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.update-info .btn-note.error {
+  color: var(--danger);
+}

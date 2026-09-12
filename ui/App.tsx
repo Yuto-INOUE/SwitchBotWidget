@@ -8,6 +8,7 @@ import { TitleBar } from "./components/TitleBar";
 import { useConfig } from "./hooks/useConfig";
 import { useDevices } from "./hooks/useDevices";
 import { useToast } from "./hooks/useToast";
+import { useUpdater } from "./hooks/useUpdater";
 import { api, errorMessage } from "./lib/bridge";
 import { Commands, type DeviceCommand } from "./lib/commands";
 import { reorder, toggleHidden, usableDevices, visibleDevices } from "./lib/ordering";
@@ -18,6 +19,7 @@ export default function App() {
   const { config, patch, rememberAc } = useConfig(notify);
   const { devices, statuses, busy, loading, lastSync, reload, refreshVisible, run, clear } =
     useDevices(config, notify);
+  const updater = useUpdater(notify);
 
   const [view, setView] = useState<View>("devices");
   const [version, setVersion] = useState("");
@@ -54,6 +56,13 @@ export default function App() {
       else setView("setup");
     })();
   }, [loadDevices]);
+
+  const updateChecked = useRef(false);
+  useEffect(() => {
+    if (updateChecked.current || !config) return;
+    updateChecked.current = true;
+    if (config.autoCheckUpdates) void updater.checkForUpdate(true);
+  }, [config, updater]);
 
   // 不透明度はウィンドウ全体に掛ける
   useEffect(() => {
@@ -216,6 +225,9 @@ export default function App() {
           visibleCount={visible.length}
           usableCount={usable.length}
           version={version}
+          updateState={updater.state}
+          onCheckUpdate={() => void updater.checkForUpdate()}
+          onInstallUpdate={() => void updater.install()}
           onPatch={(changes) => void patch(changes)}
           onOpenPicker={() => setView("picker")}
           onRecredential={() => setView("setup")}
