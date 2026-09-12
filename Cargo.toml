@@ -1,0 +1,37 @@
+[package]
+name = "switchbot-widget"
+version = "0.1.0"
+edition = "2021"
+description = "デスクトップ常駐型 SwitchBot リモコンウィジェット"
+authors = ["wwyinoue"]
+license = "MIT"
+
+[features]
+default = ["custom-protocol"]
+# 有効だとフロントエンドを実行ファイルに埋め込む。外すと tauri.conf.json の devUrl を見に行く
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+hmac = "0.12"
+sha2 = "0.10"
+base64 = "0.22"
+uuid = { version = "1", features = ["v4"] }
+keyring = { version = "3", features = ["windows-native"] }
+anyhow = "1"
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.52"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

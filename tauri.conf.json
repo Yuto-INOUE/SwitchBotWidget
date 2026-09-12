@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "SwitchBot Widget",
+  "mainBinaryName": "switchbot-widget",
+  "version": "0.1.0",
+  "identifier": "jp.local.switchbot-widget",
+  "build": {
+    "frontendDist": "dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "SwitchBot Widget",
+        "width": 360,
+        "height": 620,
+        "minWidth": 320,
+        "minHeight": 240,
+        "maxWidth": 900,
+        "maxHeight": 1400,
+        "resizable": true,
+        "maximizable": false,
+        "decorations": false,
+        "transparent": true,
+        "shadow": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "visible": false,
+        "center": true,
+        "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection,AudioServiceOutOfProcess --renderer-process-limit=1 --js-flags=--max-old-space-size=64 --disable-background-networking --disable-sync --disable-component-update"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "shortDescription": "SwitchBot リモコンウィジェット",
+    "longDescription": "デスクトップに常駐する SwitchBot のリモコンウィジェット",
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "Japanese"
+        ]
+      }
+    }
+  }
+}
